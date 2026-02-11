@@ -1,0 +1,6 @@
+*.env
+/app
+/bin/
+*.exe
+*.out
+mongo-data
