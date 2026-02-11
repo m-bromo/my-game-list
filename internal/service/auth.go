@@ -14,10 +14,13 @@ import (
 
 var (
 	ErrEmailAlreadyRegistered = errors.New("email already registered")
+	ErrEmailNotRegistered     = errors.New("the email was not registered")
+	ErrInvalidCredentials     = errors.New("the credentials provided were not valid")
 )
 
 type AuthService interface {
 	Register(ctx context.Context, input *models.RegisterInput) error
+	Login(ctx context.Context, input *models.LoginInput) error
 }
 
 type authService struct {
@@ -33,7 +36,7 @@ func NewService(userRepository repository.UserRepository, hasher security.Hasher
 }
 
 func (s *authService) Register(ctx context.Context, input *models.RegisterInput) error {
-	err := s.userRepository.GetByEmail(ctx, input.Email)
+	_, err := s.userRepository.GetByEmail(ctx, input.Email)
 	if err != nil && errors.Is(err, repository.ErrUserNotFound) {
 		return fmt.Errorf("register user: %w", err)
 	}
@@ -52,6 +55,28 @@ func (s *authService) Register(ctx context.Context, input *models.RegisterInput)
 
 	if err := s.userRepository.Save(ctx, user); err != nil {
 		return fmt.Errorf("register user: %w", err)
+	}
+
+	return nil
+}
+
+func (s *authService) Login(ctx context.Context, input *models.LoginInput) error {
+	foundUser, err := s.userRepository.GetByEmail(ctx, input.Email)
+	if err != nil {
+		if errors.Is(err, repository.ErrUserNotFound) {
+			return fmt.Errorf("login: %w", ErrEmailNotRegistered)
+		}
+
+		return fmt.Errorf("login: %w", err)
+	}
+
+	ok, err := s.hasher.VerifyPassword(input.Password, foundUser.Password)
+	if err != nil {
+		return fmt.Errorf("login: %w", err)
+	}
+
+	if !ok {
+		return fmt.Errorf("login: %w", ErrInvalidCredentials)
 	}
 
 	return nil
