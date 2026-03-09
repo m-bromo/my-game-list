@@ -1,12 +1,12 @@
 package models
 
 type RegisterInput struct {
-	Username string
-	Email    string
-	Password string
+	Username string `json:"username" binding:"required"`
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required"`
 }
 
 type LoginInput struct {
-	Email    string
-	Password string
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
