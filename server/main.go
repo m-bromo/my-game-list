@@ -16,5 +16,4 @@ func main() {
 	log := logging.NewLogger(config)
 
 	log.Log.Info("starting application")
-
 }
