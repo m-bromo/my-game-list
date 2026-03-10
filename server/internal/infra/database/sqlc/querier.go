@@ -9,6 +9,7 @@ import (
 )
 
 type Querier interface {
+	GetAllGames(ctx context.Context) ([]GetAllGamesRow, error)
 	GetByEmail(ctx context.Context, email string) (User, error)
 	Save(ctx context.Context, arg SaveParams) error
 }

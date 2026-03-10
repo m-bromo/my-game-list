@@ -6,10 +6,67 @@ package sqlc
 
 import (
 	"database/sql"
+	"database/sql/driver"
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
 )
+
+type Genre string
+
+const (
+	GenreAction     Genre = "action"
+	GenreAdventure  Genre = "adventure"
+	GenreRpg        Genre = "rpg"
+	GenreStrategy   Genre = "strategy"
+	GenreSimulation Genre = "simulation"
+	GenreHorror     Genre = "horror"
+)
+
+func (e *Genre) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = Genre(s)
+	case string:
+		*e = Genre(s)
+	default:
+		return fmt.Errorf("unsupported scan type for Genre: %T", src)
+	}
+	return nil
+}
+
+type NullGenre struct {
+	Genre Genre
+	Valid bool // Valid is true if Genre is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullGenre) Scan(value interface{}) error {
+	if value == nil {
+		ns.Genre, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.Genre.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullGenre) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.Genre), nil
+}
+
+type Game struct {
+	ID          uuid.UUID
+	Name        string
+	Description string
+	Genre       NullGenre
+	CreatedAt   time.Time
+	UpdatedAt   sql.NullTime
+}
 
 type User struct {
 	ID        uuid.UUID
