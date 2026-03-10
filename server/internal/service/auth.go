@@ -7,7 +7,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/m-bromo/my-game-list/internal/domain"
-	repository "github.com/m-bromo/my-game-list/internal/repository/user"
+	"github.com/m-bromo/my-game-list/internal/repository"
 	"github.com/m-bromo/my-game-list/internal/web/models"
 	"github.com/m-bromo/my-game-list/pkg/security"
 )
@@ -28,7 +28,7 @@ type authService struct {
 	hasher         security.Hasher
 }
 
-func NewService(userRepository repository.UserRepository, hasher security.Hasher) AuthService {
+func NewUserService(userRepository repository.UserRepository, hasher security.Hasher) AuthService {
 	return &authService{
 		userRepository: userRepository,
 		hasher:         hasher,

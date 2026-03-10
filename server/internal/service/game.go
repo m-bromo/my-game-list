@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	repository "github.com/m-bromo/my-game-list/internal/repository/game"
+	"github.com/m-bromo/my-game-list/internal/repository"
 	"github.com/m-bromo/my-game-list/internal/web/models"
 )
 
