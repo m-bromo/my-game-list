@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:16-alpine
-    container_name: link_db
+    container_name: game_list_db
     restart: always
     environment:
       - POSTGRES_USER=admin
