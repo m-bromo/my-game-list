@@ -1,19 +1,20 @@
 package config
 
 type Config struct {
-	Environment string
+	Environment string `env:"ENV"`
 	PostgresDB  PostgresDB
+	Api         API
 }
 
 type PostgresDB struct {
-	Host     string
-	Port     string
-	Name     string
-	User     string
-	Password string
+	Host     string `env:"DB_HOST"`
+	Port     string `env:"DB_PORT"`
+	Name     string `env:"DB_NAME"`
+	User     string `env:"DB_USER"`
+	Password string `env:"DB_PASSWORD"`
 }
 
 type API struct {
-	Host string
-	Port string
+	Host string `env:"API_HOST"`
+	Port string `env:"API_PORT"`
 }
