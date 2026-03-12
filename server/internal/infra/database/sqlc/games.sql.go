@@ -7,10 +7,11 @@ package sqlc
 
 import (
 	"context"
+	"database/sql"
 )
 
 const getAllGames = `-- name: GetAllGames :many
-SELECT name, description, genre
+SELECT name, description, genre, image_url
 FROM GAMES
 `
 
@@ -18,6 +19,7 @@ type GetAllGamesRow struct {
 	Name        string
 	Description string
 	Genre       NullGenre
+	ImageUrl    sql.NullString
 }
 
 func (q *Queries) GetAllGames(ctx context.Context) ([]GetAllGamesRow, error) {
@@ -29,7 +31,12 @@ func (q *Queries) GetAllGames(ctx context.Context) ([]GetAllGamesRow, error) {
 	var items []GetAllGamesRow
 	for rows.Next() {
 		var i GetAllGamesRow
-		if err := rows.Scan(&i.Name, &i.Description, &i.Genre); err != nil {
+		if err := rows.Scan(
+			&i.Name,
+			&i.Description,
+			&i.Genre,
+			&i.ImageUrl,
+		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)

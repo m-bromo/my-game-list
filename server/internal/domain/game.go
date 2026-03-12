@@ -7,4 +7,5 @@ type Game struct {
 	Name        string
 	Description string
 	Genre       string
+	ImageUrl    string
 }

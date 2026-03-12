@@ -30,6 +30,7 @@ func (r *sqlcGameRepository) GetAllGames(ctx context.Context) ([]*domain.Game, e
 			Name:        game.Name,
 			Description: game.Description,
 			Genre:       game.Description,
+			ImageUrl:    game.ImageUrl.String,
 		})
 	}
 

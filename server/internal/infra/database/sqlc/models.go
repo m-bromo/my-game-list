@@ -64,6 +64,7 @@ type Game struct {
 	Name        string
 	Description string
 	Genre       NullGenre
+	ImageUrl    sql.NullString
 	CreatedAt   time.Time
 	UpdatedAt   sql.NullTime
 }

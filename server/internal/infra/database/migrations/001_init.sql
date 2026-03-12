@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS games (
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     genre genre,
+    image_url text,
     created_at TIMESTAMPTZ NOT NULL,
     updated_at TIMESTAMPTZ DEFAULT NULL
 );

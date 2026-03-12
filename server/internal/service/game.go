@@ -34,6 +34,7 @@ func (s *gameService) GetAll(ctx context.Context) ([]*models.GameOutput, error) 
 			Name:        game.Name,
 			Description: game.Description,
 			Genre:       game.Genre,
+			ImageUrl:    game.ImageUrl,
 		})
 	}
 
